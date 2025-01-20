@@ -1,1 +1,4 @@
-
+[[headers]]
+  for = "/infrastructure/index.js"
+  [headers.values]
+    Content-Type = "application/javascript"
