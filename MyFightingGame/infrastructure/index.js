@@ -112,9 +112,7 @@ window.addEventListener('keydown', (event) => {
             sprites.enemy.velocity.x = 5;
             keyArrowDownRight = true; // Mark 'a' as pressed
             break;
-        case 'Enter':
-            sprites.enemy.attack();
-            break;
+        
     }
 });
 
@@ -327,9 +325,7 @@ window.addEventListener('keydown', (event) => {
             sprites.enemy.velocity.x = 5;
             sprites.enemy.switchSprite('run');
             break;
-        case 'Enter':
-            sprites.enemy.attack();
-            break;
+       
     }
 });
 
@@ -340,42 +336,58 @@ let audioAtkEnemy = document.querySelector('#atkEnemy');
 // Player attack key 'e' press
 // Declare audio elements for player and enemy attack sounds
 
+let canAttackPlayer = true; // Attack cooldown flag
+const attackCooldownPlayer = 300; // Cooldown in milliseconds (adjust as needed)
 
 // Player attack key 'e' press
 window.addEventListener('keydown', (event) => {
-    switch (event.key) {
-        case 'e':
-            // Trigger player attack
-            sprites.player.attack();
+    if (event.key === 'e' && canAttackPlayer) {
+        canAttackPlayer = false; // Prevent further attacks until cooldown ends
 
-            // Check if the audio element is present and play sound only once
-            if (audioAtkPlayer) {
-                if (!audioAtkPlayer.paused) {
-                    audioAtkPlayer.currentTime = 0;  // Reset audio to start
-                }
-                audioAtkPlayer.play();  // Play the attack sound for the player
+        sprites.player.attack();
+
+        // Play attack sound
+        if (audioAtkPlayer) {
+            if (!audioAtkPlayer.paused) {
+                audioAtkPlayer.currentTime = 0;
             }
-            break;
+            audioAtkPlayer.play();
+        }
+
+        // Re-enable attack after cooldown
+        setTimeout(() => {
+            canAttackPlayer = true;
+        }, attackCooldownPlayer);
     }
 });
+
+
+let canAttackEnemy = true; // Attack cooldown flag
+const attackCooldownEnemy = 300; // Cooldown in milliseconds
 
 // Enemy attack key 'Enter' press
 window.addEventListener('keydown', (event) => {
-    switch (event.key) {
-        case 'Enter':
-            // Trigger enemy attack
-            sprites.enemy.attack();
+    if (event.key === 'Enter' && canAttackEnemy) {
+        canAttackEnemy = false;
 
-            // Check if the audio element is present and play sound only once
-            if (audioAtkEnemy) {
-                if (!audioAtkEnemy.paused) {
-                    audioAtkEnemy.currentTime = 0;  // Reset audio to start
-                }
-                audioAtkEnemy.play();  // Play the attack sound for the enemy
+        // Trigger enemy attack
+        sprites.enemy.attack();
+
+        // Play attack sound if available
+        if (audioAtkEnemy) {
+            if (!audioAtkEnemy.paused) {
+                audioAtkEnemy.currentTime = 0; // Reset audio to start
             }
-            break;
+            audioAtkEnemy.play();
+        }
+
+        // Cooldown reset
+        setTimeout(() => {
+            canAttackEnemy = true;
+        }, attackCooldownEnemy);
     }
 });
+
 
 
 
