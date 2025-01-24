@@ -1,6 +1,6 @@
 class GameService {
 
-    constructor() { }
+    constructor() {}
 
     updateTimer(timer) {
         if (timer > 0) {
@@ -14,36 +14,24 @@ class GameService {
         const isPlayerBehind = player.position.x > enemy.position.x;
 
         // Handle back-to-back collisions based on idle and opposite idle sprites
-        if (isPlayerBehind && enemy.image == enemy.sprites.idle.image && 
-            player.image == player.sprites.idleOpposite.image) {
+        if(isPlayerBehind && enemy.image == enemy.sprites.idle.image && player.image == player.sprites.idleOpposite.image && !player.isAttacking) {
             return false;
-        }else if(!isPlayerBehind && enemy.image == enemy.sprites.idle.image && 
-            player.image == player.sprites.idleOpposite.image){
+        }
 
-                return true;
-            }
-
-        if(isPlayerBehind && player.image == player.sprites.idleOpposite.image && enemy.image == enemy.sprites.idle.image
-            || isPlayerBehind && player.image == player.sprites.attack1Opposite.image && enemy.image == enemy.sprites.idle.image
-            || isPlayerBehind && player.image == player.sprites.attack2Opposite.image && enemy.image == enemy.sprites.idle.image){
+        if(isPlayerBehind && enemy.image == enemy.sprites.idle.image && player.image == player.sprites.idleOpposite.image && player.isAttacking) {
             return true;
         }
 
-        if (isPlayerBehind && enemy.image == enemy.sprites.idleOpposite.image && 
-            player.image == player.sprites.idle.image && player.isAttacking) {
+        if(isPlayerBehind && enemy.image == enemy.sprites.idleOpposite.image && player.image == player.sprites.idleOpposite.image) {
             return true;
         }
 
-        if (isPlayerBehind && enemy.image == enemy.sprites.idleOpposite.image && 
-            player.image == player.sprites.idleOpposite.image) {
+        if(isPlayerBehind && enemy.image == enemy.sprites.idleOpposite.image && player.image == player.sprites.idle.image) {
             return true;
         }
 
-        if (isPlayerBehind && enemy.image == enemy.sprites.idleOpposite.image && 
-            player.image == player.sprites.idle.image) {
-            return true;
-        }
 
+        
         // Check for collision when player is attacking from behind
         if (
             isPlayerBehind && (
@@ -78,8 +66,8 @@ class GameService {
         // Check if player is facing away and the enemy is not in attack or idle state
         if (
             (player.image === player.sprites.attack1Opposite.image ||
-                player.image === player.sprites.attack2Opposite.image ||
-                player.image === player.sprites.idleOpposite.image) && (
+            player.image === player.sprites.attack2Opposite.image ||
+            player.image === player.sprites.idleOpposite.image) && (
                 enemy.image === enemy.sprites.idleOpposite.image ||
                 enemy.image === enemy.sprites.attack1Opposite.image ||
                 enemy.image === enemy.sprites.attack2Opposite.image
